@@ -1,0 +1,20 @@
+/* currency-historical.component.css */
+.currency-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.rates-info {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.date-picker-container {
+    flex-shrink: 0;
+}
+
+mat-form-field {
+    width: 100%;
+}

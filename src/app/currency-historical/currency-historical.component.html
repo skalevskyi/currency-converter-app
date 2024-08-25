@@ -1,9 +1,19 @@
-<div>
-    <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
-    <div *ngIf="historicalRates">
-      <p>Курс на {{ historicalRates.date }}:</p>
-      <p>USD: {{ getCurrencyRate('USD') }}</p>
-      <p>EUR: {{ getCurrencyRate('EUR') }}</p>
+<!-- currency-historical.component.html -->
+<div class="currency-container">
+    <!-- Інформація про курси валют -->
+    <div class="rates-info" *ngIf="historicalRates">
+        <h3>Курс на {{ historicalRates.date }}:</h3>
+        <p>USD: {{ getCurrencyRate('USD') }}</p>
+        <p>EUR: {{ getCurrencyRate('EUR') }}</p>
     </div>
-  </div>
-  
+
+    <!-- Календар для вибору дати -->
+    <div class="date-picker-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Оберіть дату</mat-label>
+            <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateChange($event)" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>

@@ -15,18 +15,12 @@ export class CurrencyHistoricalComponent implements OnInit {
   ngOnInit(): void {
     this.selectedDate = this.getLastYearDate(); // Встановлюємо дату на поточну дату минулого року
     console.log('Initial selectedDate:', this.selectedDate); // Додано для перевірки
-    this.fetchHistoricalRates(this.selectedDate);
+    this.fetchHistoricalRates(this.formatDateForApi(this.selectedDate));
   }
 
   fetchHistoricalRates(date: string): void {
-    const formattedDate = this.formatDateForApi(date); // Форматуємо дату у формат DD.MM.YYYY
-    if (!formattedDate) {
-      console.error('Невірний формат дати:', date);
-      return; // Виходимо, якщо дата у невірному форматі
-    }
-
-    console.log('Fetching data for date:', formattedDate); // Додано для перевірки
-    this.currencyService.getHistoricalRates(formattedDate).subscribe(data => {
+    console.log('Fetching data for date:', date); // Додано для перевірки
+    this.currencyService.getHistoricalRates(date).subscribe(data => {
       console.log('Отримані дані:', data); // Додано лог для перевірки
       if (data && data.exchangeRate) {
         this.historicalRates = data;
@@ -40,10 +34,10 @@ export class CurrencyHistoricalComponent implements OnInit {
   }
 
   onDateChange(event: any): void {
-    const newDate = event.target.value;
+    const newDate = event.value; // event.value вже є об'єктом Date
     this.selectedDate = newDate;
     console.log('Selected Date Changed:', this.selectedDate); // Додано для перевірки
-    this.fetchHistoricalRates(newDate);
+    this.fetchHistoricalRates(this.formatDateForApi(newDate));
   }
 
   getLastYearDate(): string {
@@ -52,26 +46,22 @@ export class CurrencyHistoricalComponent implements OnInit {
     return date.toISOString().split('T')[0]; // Повертаємо дату у форматі YYYY-MM-DD для використання в HTML
   }
 
-  formatDateForApi(date: string): string {
-    if (!date) {
-      console.error('Invalid date input:', date);
-      return '';
+  formatDateForApi(date: Date | string): string {
+    if (date instanceof Date) {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}.${month}.${year}`; // Повертаємо дату у форматі DD.MM.YYYY для API
+    } else if (typeof date === 'string') {
+      const parts = date.split('-');
+      if (parts.length !== 3) {
+        console.error('Date format is incorrect:', date);
+        return '';
+      }
+      const [year, month, day] = parts;
+      return `${day}.${month}.${year}`; // Повертаємо дату у форматі DD.MM.YYYY для API
     }
-
-    const parts = date.split('-');
-    if (parts.length !== 3) {
-      console.error('Date format is incorrect:', date);
-      return '';
-    }
-
-    const [year, month, day] = parts;
-
-    if (!year || !month || !day) {
-      console.error('Incomplete date parts:', date);
-      return '';
-    }
-
-    return `${day}.${month}.${year}`; // Повертаємо дату у форматі DD.MM.YYYY для API
+    return '';
   }
 
   getCurrencyRate(currency: string): number | undefined {
