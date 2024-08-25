@@ -1,0 +1,16 @@
+<div [formGroup]="formGroup" class="currency-input-group">
+    <input 
+        type="number" 
+        formControlName="amount" 
+        class="currency-input-amount"
+        style="border: none; border-right: 1px solid #eeeeee; padding: 5px;" />
+
+    <select 
+        formControlName="currency" 
+        class="currency-input-select"
+        style="border: none; padding: 5px;">
+        <option *ngFor="let currency of currencies" [value]="currency.code">
+            {{ currency.code }} - {{ currency.symbol }}
+        </option>
+    </select>
+</div>

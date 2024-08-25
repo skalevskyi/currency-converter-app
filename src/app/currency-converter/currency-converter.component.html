@@ -1,0 +1,17 @@
+<div class="currency-converter-container">
+    <!-- From currency input and select -->
+    <div class="currency-input-group">
+        <app-currency-input 
+            [formGroup]="fromGroup"
+            class="currency-input-container">
+        </app-currency-input>
+    </div>
+
+    <!-- To currency input and select -->
+    <div class="currency-input-group mt-3">
+        <app-currency-input 
+            [formGroup]="toGroup"
+            class="currency-input-container">
+        </app-currency-input>
+    </div>
+</div>
