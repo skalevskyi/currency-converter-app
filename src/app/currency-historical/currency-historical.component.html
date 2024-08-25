@@ -1,0 +1,9 @@
+<div>
+    <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
+    <div *ngIf="historicalRates">
+      <p>Курс на {{ historicalRates.date }}:</p>
+      <p>USD: {{ getCurrencyRate('USD') }}</p>
+      <p>EUR: {{ getCurrencyRate('EUR') }}</p>
+    </div>
+  </div>
+  

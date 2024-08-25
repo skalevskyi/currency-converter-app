@@ -10,6 +10,7 @@ import { CurrencyService } from '../services/currency.service';
 export class CurrencyConverterComponent implements OnInit {
   fromGroup: FormGroup;
   toGroup: FormGroup;
+  showHistorical: boolean = false; // Змінна для контролю видимості компонента historical
   currencies = [
     { code: 'USD', symbol: '$' },
     { code: 'EUR', symbol: '€' },
@@ -35,6 +36,11 @@ export class CurrencyConverterComponent implements OnInit {
     this.loadExchangeRates();
     this.fromGroup.valueChanges.subscribe(() => this.convertFromCurrency());
     this.toGroup.valueChanges.subscribe(() => this.convertToCurrency());
+
+    // Додаємо підписку для контролю видимості компонента historical
+    this.fromGroup.get('currency')?.valueChanges.subscribe(value => {
+      this.showHistorical = !!value; // Показувати historical компонент при виборі валюти
+    });
   }
 
   private loadExchangeRates(): void {
